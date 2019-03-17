@@ -10,6 +10,7 @@ from flask_httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask_sqlalchemy import SQLAlchemy
+from geopy import distance
 import json
 import os
 
@@ -30,7 +31,6 @@ app.config['AUTH_TOKEN_VALIDITY'] = 180000
 ###################################################
 # MODELS
 ###################################################
-
 # Connect to the database
 db = SQLAlchemy(app)
 
@@ -93,7 +93,6 @@ class FoodItem(db.Model):
 ###################################################
 # AUTHENTICATION
 ###################################################
-
 # -------------------------------------------------
 # AUTHENTICATION HELPER FUNCTIONS
 # -------------------------------------------------
@@ -157,9 +156,8 @@ def oauth_verify_client_id(func):
 # -------------------------------------------------
 # AUTHENTICATION FUNCTIONALITY
 # -------------------------------------------------
-
 # Login via the simple API and get an authorization token
-@app.route('/api/login')
+@app.route('/api/login', methods=['POST'])
 def simple_login():
     user = verify_password_or_token(request.json.get('username'), request.json.get('password'))
     if not user:
@@ -250,10 +248,21 @@ def oauth_exchange_key():
 ###################################################
 # FUNCTIONALITY
 ###################################################
-#@app.route('/api/resource')
-#@login_required
-#def get_resource():
-#    return jsonify({'data': 'Hello, %s!' % g.user.username})
+@app.route('/api/listings')
+@verify_token
+def get_listings():
+    listings = FoodListing.query.filter_by(user=user.username)
+    return (jsonify(resp), 200)
+
+@app.route('/api/listings', methods=['POST'])
+@verify_token
+def new_listing():
+    pass
+
+@app.route('/api/dropzone', methods=['POST'])
+@verify_token
+def dropzone_update():
+    pass
 
 if __name__ == '__main__':
     if not os.path.exists('db.sqlite'):
