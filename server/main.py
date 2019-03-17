@@ -4,13 +4,16 @@
 # IMPORTS
 ###################################################
 from flask import Flask, abort, request, jsonify, g, url_for, render_template, redirect
-from util import prepare_key_value
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 from flask_sqlalchemy import SQLAlchemy
 from geopy import distance
+from datetime import datetime, timedelta
+from werkzeug.utils import secure_filename
+from sqlalchemy.orm import joinedload, relationship, load_only
+from sqlalchemy.sql import func
 import json
 import os
 
@@ -20,6 +23,9 @@ app = Flask(__name__)
 # CONFIGURATION
 ###################################################
 app.config['SECRET_KEY'] = 'iuLH@N$piu23jI@#ULVN'
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['ALLOWED_EXTENSIONS'] = ['png', 'jpg', 'jpeg', 'gif']
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -41,7 +47,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(64))
-    device_pin = db.Column(db.Integer)
     food_listings = db.relationship('FoodListing', backref='User', lazy=True)
 
     def hash_password(self, password):
@@ -73,11 +78,15 @@ class FoodListing(db.Model):
     __tablename__ = 'food_listing'
 
     id = db.Column(db.Integer, primary_key=True)
-    loc_lat = db.Column(db.Float)
-    loc_long = db.Column(db.Float)
+    lat = db.Column(db.Float)
+    lon = db.Column(db.Float)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-    added = db.DateTime()
+    photo = db.Column(db.String(60))
+    added = db.Column(db.DateTime, default=datetime.now)
     food_items = db.relationship('FoodItem', backref='FoodListing', lazy=True)
+
+    def distance_to(self, lat, lon):
+        return round(distance.distance((self.lat, self.lon), (lat, lon)).miles, 2)
 
 # Food item model
 class FoodItem(db.Model):
@@ -86,9 +95,8 @@ class FoodItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     listing = db.Column(db.Integer, db.ForeignKey('food_listing.id'))
     name = db.Column(db.String(60))
-    photo = db.Column(db.String(60))
     quantity = db.Column(db.Integer)
-    reserved_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reserved_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
 ###################################################
 # AUTHENTICATION
@@ -166,7 +174,7 @@ def simple_login():
     # Generate a new authorization token
     auth_token = user.generate_auth_token().decode('ascii')
 
-    return jsonify({'token': auth_token, 'duration': app.config['AUTH_TOKEN_VALIDITY']}, 200)
+    return (jsonify({'token': auth_token, 'duration': app.config['AUTH_TOKEN_VALIDITY']}), 200)
 
 # Create an account via the simple API
 @app.route('/api/users', methods=['POST'])
@@ -246,24 +254,86 @@ def oauth_exchange_key():
     return (jsonify(resp), 200)
 
 ###################################################
-# FUNCTIONALITY
+# LISTINGS
 ###################################################
+# -------------------------------------------------
+# LISTING HELPER FUNCTIONS
+# -------------------------------------------------
+def check_extension(file_name):
+    file_ext = file_name.rsplit('.', 1)[1].lower()
+    for ext in app.config['ALLOWED_EXTENSIONS']:
+        if file_ext == ext:
+            return True
+
+    return False
+
+def upload_file(request_files):
+    if 'file' not in request_files:
+        return False
+
+    file = request_files['file']
+    if file.filename == '':
+        return False
+
+    if not file or not check_extension(file.filename):
+        return False
+
+    file_name = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+
+    return file_name
+
+# -------------------------------------------------
+# LISTING FUNCTIONALITY
+# -------------------------------------------------
+# Get all current listings
 @verify_token
 @app.route('/api/listings')
 def get_listings():
-    listings = FoodListing.query.filter_by(user=user.username)
+    lat = request.args.get('lat', '')
+    lon = request.args.get('lon', '')
+
+    listings = FoodListing.query.filter(FoodListing.added >= (datetime.now() - datetime.timedelta(days=1))).filter(FoodListing.distance_to(lat, lon) < 10).all()
+    
+    resp = { 'listings': [] }
+    for listing in listings:
+        items = FoodItem.query.filter(listing = listing.id, reserved_by = None).options(load_only('name', 'quantity'))
+
+        items_aggregate = []
+        for item in items:
+            items_aggregate.append({
+                "name": item.name,
+                "quantity": item.quantity
+            });
+
+        resp.listings.append({
+            'id': listing.id,
+            'photo': listing.photo,
+            'added': listing.added,
+            'location': {
+                'lat': listing.lat,
+                'lon': listing.lon
+            },
+            'items': items_aggregate
+        })
+
     return (jsonify(resp), 200)
 
+# Create a new listing
 @verify_token
 @app.route('/api/listings', methods=['POST'])
 def new_listing():
     pass
 
+# Update a dropzone listing
 @verify_token
-@app.route('/api/dropzone', methods=['POST'])
-def dropzone_update():
+@app.route('/api/listings/image', methods=['POST'])
+def image_update():
     pass
 
+###################################################
+# START WEB SERVER
+###################################################
 if __name__ == '__main__':
     if not os.path.exists('db.sqlite'):
     	db.create_all()
