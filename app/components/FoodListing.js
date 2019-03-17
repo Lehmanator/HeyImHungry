@@ -17,7 +17,7 @@ export default class FoodListing extends React.Component {
     }
     render() {
         return (
-            <Card title={} image={require('./assets/icon.png')}>
+            <Card title={'yolo'} image={require('./assets/icon.png')}>
                 <MapView
                     initialRegion={{
                         latitude: 40.803863,
