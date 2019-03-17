@@ -248,19 +248,19 @@ def oauth_exchange_key():
 ###################################################
 # FUNCTIONALITY
 ###################################################
-@app.route('/api/listings')
 @verify_token
+@app.route('/api/listings')
 def get_listings():
     listings = FoodListing.query.filter_by(user=user.username)
     return (jsonify(resp), 200)
 
-@app.route('/api/listings', methods=['POST'])
 @verify_token
+@app.route('/api/listings', methods=['POST'])
 def new_listing():
     pass
 
-@app.route('/api/dropzone', methods=['POST'])
 @verify_token
+@app.route('/api/dropzone', methods=['POST'])
 def dropzone_update():
     pass
 
