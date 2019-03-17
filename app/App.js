@@ -20,8 +20,10 @@ export default class HeyImHungryApp extends React.Component {
           rightComponent = { <FontAwesome name={'sign-out'} size={23} color="#fff" /> }
         />
 
-        <ScrollView>
-        <FoodItem /><FoodItem /><FoodItem /><FoodItem />
+    <ScrollView>
+        { this.state.listings.map(listing => (
+            <FoodListing data={listing} />
+        ))}
         </ScrollView>
 
       </ThemeProvider>
