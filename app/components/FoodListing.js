@@ -8,13 +8,12 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { Header, ThemeProvider, Text, Card, Image } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FoodItem from './FoodItem.js';
 
 const theme = {};
 
 export default class FoodListing extends React.Component {
     constructor(props) {
-        const endpoint = "https://api.heyimhungryapp.com/api/listings"
-        fetch(endpoint).then((res) => {})
     }
     render() {
         return (
@@ -27,7 +26,7 @@ export default class FoodListing extends React.Component {
                         longitudeDelta: 0.001
                     }} >
                 </MapView>
-                {this.state.fooditems.map(item => (
+                {this.state.data.map(item => (
                     <FoodItem data={item.data} />
                 ))}
             </Card>
