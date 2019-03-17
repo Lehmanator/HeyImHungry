@@ -15,8 +15,7 @@ class FoodItem extends React.Component {
                 latitude: 40.803863,
                 longitude: -77.864962,
                 latitudeDelta: 0.001,
-                longitudeDelta: 0.001
-            }} \>
+                longitudeDelta: 0.001 }} />
         <Text style={{marginBottom: 10}}>
           The idea with React Native Elements is more about component structure than actual design.
         </Text>
