@@ -36,6 +36,8 @@ db = SQLAlchemy(app)
 
 # User model
 class User(db.Model):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(64))
@@ -68,6 +70,8 @@ class User(db.Model):
 
 # Food listing model
 class FoodListing(db.Model):
+    __tablename__ = 'food_listing'
+
     id = db.Column(db.Integer, primary_key=True)
     loc_lat = db.Column(db.Float)
     loc_long = db.Column(db.Float)
@@ -77,11 +81,14 @@ class FoodListing(db.Model):
 
 # Food item model
 class FoodItem(db.Model):
+    __tablename__ = 'food_item'
+
     id = db.Column(db.Integer, primary_key=True)
+    listing = db.Column(db.Integer, db.ForeignKey('food_listing.id'))
     name = db.Column(db.String(60))
     photo = db.Column(db.String(60))
     quantity = db.Column(db.Integer)
-    reserved_by = db.Column(db.Integer, db.ForeignKey('foodlisting.id'))
+    reserved_by = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 ###################################################
 # AUTHENTICATION
