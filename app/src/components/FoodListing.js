@@ -7,23 +7,17 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-import { ScrollView } from "react-native";
-import {
-  Header,
-  ThemeProvider,
-  Text,
-  Card,
-  Image
-} from "react-native-elements";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FoodItem from "./FoodItem.js";
 
 const theme = {};
 
 class FoodListing extends Component {
-  constructor(props) {}
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
+      <div>Yolo</div>
+      /*
       <Card title={"yolo"} image={require("../assets/icon.png")}>
         <MapView
           initialRegion={{
@@ -37,6 +31,7 @@ class FoodListing extends Component {
           <FoodItem data={item.data} />
         ))}
       </Card>
+      */
     );
   }
 }
