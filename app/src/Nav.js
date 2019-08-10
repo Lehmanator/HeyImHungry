@@ -57,6 +57,7 @@ class Nav extends Component {
               <MailIcon />
             </Badge>
           </IconButton>
+          Messages
         </MenuItem>
       </Menu>
     );
@@ -68,7 +69,10 @@ class Nav extends Component {
               color="inherit"
               aria-label="Menu"
               onClick={this.toggleDrawer(true)}
-              style={{ marginLeft: -12, marginRight: 20 }}
+              style={{
+                position: 'absolute',
+                left: 10,
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -77,26 +81,30 @@ class Nav extends Component {
               color="inherit"
               noWrap
               disply="block"
-              padding-right="20px"
+              style={{
+                paddingLeft: 40,
+                minWidth: 190,
+              }}
             >
-              HeyImHungry
+              Hey, I'm Hungry!
             </Typography>
             <div
               className="searchBar"
               style={{
                 position: "relative",
-                borderRadius: 10,
+                borderRadius: 6,
                 backgroundColor: "#FFFFFF16",
-                marginLeft: "30px",
-                marginRight: "6px",
-                width: "60%",
-                padding: "3px 3px 3px 10px"
+                marginLeft: "15px",
+                marginRight: "20px",
+                width: "80%",
+                padding: "0px 0px 0px 10px"
               }}
             >
               <div
                 className="searchIcon"
                 style={{
                   position: "absolute",
+                  top: 3,
                   width: "27px",
                   height: "90%",
                   display: "flex",
@@ -109,15 +117,16 @@ class Nav extends Component {
               <InputBase
                 placeholder="Search for food..."
                 style={{
-                  padding: "3px",
-                  paddingLeft: "30px",
+                  paddingTop: "8px",
+                  paddingBottom: "5px",
+                  paddingLeft: "35px",
                   color: "inherit",
-                  width: "100%"
+                  width: "100%",
                 }}
               />
             </div>
-            <div className="grow" style={{ flexGrow: 1 }} />
-            <div className="overflow">
+
+            <div className="overflow" style={{ position: 'absolute', right: 0 }}>
               <IconButton
                 aria-haspopup="true"
                 onClick={this.handleMobileMenuOpen}
@@ -125,6 +134,7 @@ class Nav extends Component {
               >
                 <MoreIcon />
               </IconButton>
+              {renderMobileMenu}
             </div>
           </Toolbar>
         </AppBar>

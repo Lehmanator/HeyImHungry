@@ -6,65 +6,117 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BasicMap from "./BasicMap";
-import { compose, withProps } from "recompose";
+//import { compose, withProps } from "recompose";
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker
 } from "react-google-maps";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardMedia from "@material-ui/core/CardMedia";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import {
+  Button,
+  Card, CardHeader, CardContent, CardActionArea, CardActions, CardMedia,
+  Grid, GridList, GridListTile, GridListTileBar,
+  Paper, Typography,
+} from "@material-ui/core";
+import { withStyles, withTheme } from '@material-ui/styles';
+
+import Banana from './assets/images/banana.jpg';
+import Apple from './assets/images/apple.jpg';
+import Orange from './assets/images/orange.jpg';
+
+const style = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: "purple",
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    transform: 'translateZ(0)',
+  },
+  title: {
+    color: "white",
+  },
+  titleBar: {
+    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    borderRadius: 8,
+  },
+  img: {
+    borderRadius: 8,
+    maxHeight: "200",
+    maxWidth: "200",
+  }
+});
 
 class Listing extends Component {
   constructor(props) {
     super(props);
-  }
 
-  render() {
+
+  }
+  renderItems(items) {
+    const { classes } = this.props;
+    var itemTiles = items.map(item => (
+      <GridListTile key={item.img}>
+        <img crossOrigin="true" src={item.img} alt={item.title} classes={{ img: classes.img }} />
+        <GridListTileBar title={item.title} classes={{ root: classes.titleBar, title: classes.title }} />
+      </GridListTile>
+    ))
+
     return (
-      <div>
-        <Card>
-          <BasicMap id={"map-" + this.props.title} />
-          <CardActionArea>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {this.props.title}
-              </Typography>
-              <Typography component="p">
-                This is the default description text for a food listing.
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Claim
-            </Button>
-            <Button size="small" color="primary">
-              Claim All
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
+      <GridList cols={2.5} className={classes.gridList}>
+        {itemTiles}
+      </GridList>
+    );
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      <Card>
+        <CardContent>
+          <Grid container justify="space-between">
+            <Grid item><Typography gutterBottom variant="h5" component="h5">{this.props.title}</Typography></Grid>
+            <Grid item><Typography>{this.props.min_ago} min ago</Typography></Grid>
+          </Grid>
+          <Typography component="p">{this.props.description}</Typography>
+          {this.renderItems(this.props.items)}
+        </CardContent>
+        <CardActions>
+          <Button size="small" color="primary">Claim Item(s)</Button>
+          <Button size="small" color="primary">Claim All</Button>
+        </CardActions>
+      </Card>
     );
   }
 }
 Listing.propTypes = {
   title: PropTypes.string,
+  description: PropTypes.string,
   lat: PropTypes.number,
-  lng: PropTypes.number
+  lng: PropTypes.number,
+  square: PropTypes.bool,
+  min_ago: PropTypes.number,
+  items: PropTypes.array,
 };
 Listing.defaultProps = {
   title: "Default Title",
+  description: "This is the default description text for a food listing.",
   lat: 42.05,
-  lng: -80.22
+  lng: -80.22,
+  square: false,
+  min_ago: 0,
+  items: [{
+    title: "Banana",
+    img: Banana,
+  }, {
+    title: "Apple",
+    img: Apple,
+  }, {
+    title: "Orange",
+    img: Orange,
+  }],
 };
-export default Listing;
+export default withStyles(style)(Listing);

@@ -19,6 +19,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from '@material-ui/icons/Home'
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -79,7 +80,7 @@ class Drawer extends React.Component {
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index % 2 === 0 ? <InboxIcon /> : <HomeIcon />}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -122,8 +123,8 @@ class Drawer extends React.Component {
               <InputBase
                 placeholder="Search for food..."
                 classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
                 }}
               />
             </div>
@@ -135,7 +136,7 @@ class Drawer extends React.Component {
                 </Badge>
               </IconButton>
               <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar': undefined}
+                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
