@@ -3,17 +3,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Listing from './Listing';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+
 import Paper from '@material-ui/core/Paper';
+import Icon from '@material-ui/core/Icon';
+import FaceIcon from '@material-ui/icons/Face';
 
 class MapContainer extends Component {
 
   renderMarkers(items) {
     var markers = items.map(item => (
-      <Marker position={{ lat: item.lat, lng: item.lng }} key={item.lng} />
+      <Marker
+        title={item.title}
+        position={{ lat: item.lat, lng: item.lng }}
+        key={item.lng}
+      />
     ));
     return markers;
   }
@@ -30,8 +33,17 @@ class MapContainer extends Component {
           zoom={12}
           // style={mapStyles}
           initialCenter={{ lat: this.props.lat - 0.075, lng: this.props.lng }}
+          scrollwheel={false}
+          streetViewControl={false}
+          zoomControl={false}
         >
-          <Marker position={{ lat: this.props.lat, lng: this.props.lng }} key="user" />
+          <Marker
+            position={{ lat: this.props.lat, lng: this.props.lng }}
+            key="user"
+            label={<Icon>face</Icon>}
+          // TODO: Fix icons
+          // icon={<FaceIcon />}
+          />
           {this.renderMarkers(this.props.items)}
         </Map >
       </Paper>

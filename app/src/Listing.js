@@ -25,6 +25,8 @@ import Banana from './assets/images/banana.jpg';
 import Apple from './assets/images/apple.jpg';
 import Orange from './assets/images/orange.jpg';
 
+import Sam from './assets/images/profile.png';
+
 const style = theme => ({
   root: {
     display: 'flex',
@@ -45,11 +47,11 @@ const style = theme => ({
     borderRadius: 8,
   },
   img: {
-    borderRadius: 8,
+    borderRadius: 10,
     maxHeight: 200,
     maxWidth: 200,
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
   }
 });
 
@@ -75,7 +77,7 @@ class Listing extends Component {
     ))
     // <Grid item><Typography>{this.props.min_ago} min ago</Typography></Grid>
     return (
-      <GridList cols={2.5} className={classes.gridList}>
+      <GridList cols={3.5} className={classes.gridList}>
         {itemTiles}
       </GridList>
     );
@@ -86,8 +88,8 @@ class Listing extends Component {
       <Card>
         <CardContent>
           <ListItem alignItems="flex-start">
-            <ListItemAvatar><Avatar /></ListItemAvatar>
-            <ListItemText primary={this.props.title} secondary={this.props.user} />
+            <ListItemAvatar><Avatar src={this.props.user.pic} /></ListItemAvatar>
+            <ListItemText primary={this.props.title} secondary={this.props.user.name} />
             <ListItemSecondaryAction>
               <Typography align="right" component="p">{this.props.min_ago} min ago</Typography>
               <Typography align="right" component="p">{this.props.dist} feet away</Typography>
@@ -106,7 +108,7 @@ class Listing extends Component {
 }
 Listing.propTypes = {
   title: PropTypes.string,
-  user: PropTypes.string,
+  user: PropTypes.object,
   description: PropTypes.string,
   lat: PropTypes.number,
   lng: PropTypes.number,
@@ -117,13 +119,16 @@ Listing.propTypes = {
 };
 Listing.defaultProps = {
   title: "Default Title",
-  user: "samlehman617",
+  user: {
+    name: "samlehman617",
+    pic: Sam,
+  },
   description: "This is the default description text for a food listing.",
   lat: 42.05,
   lng: -80.22,
   square: false,
   min_ago: 0,
-  dist: 500,
+  dist: 1000,
   items: [{
     title: "Banana",
     img: Banana,

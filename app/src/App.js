@@ -1,5 +1,5 @@
 import React, { Component, } from 'react';
-
+import { loadCSS } from 'fg-loadcss';
 import {
   Container, CssBaseline, Divider, Fab,
   Grid, GridList,

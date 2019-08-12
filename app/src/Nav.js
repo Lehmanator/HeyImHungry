@@ -28,8 +28,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import { withStyles, withTheme } from '@material-ui/styles';
 
-import { NavDrawer } from "./NavDrawer";
-
 const style = theme => ({
   drawerHeader: {
     marginLeft: -5,
