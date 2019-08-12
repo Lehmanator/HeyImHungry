@@ -1,6 +1,6 @@
 {
   "name": "HeyImHungry",
-  "private": true,
+  "private": false,
   "author": "Sam Lehman",
   "version": "0.1.0",
   "description": "Hey, I'm Hungry helps eliminate food waste buy connecting hungry users with people who have excess or leftover food.",
