@@ -6,20 +6,20 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-//import { compose, withProps } from "recompose";
+
 import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker
-} from "react-google-maps";
-import {
+  Avatar,
   Button,
   Card, CardHeader, CardContent, CardActionArea, CardActions, CardMedia,
   Grid, GridList, GridListTile, GridListTileBar,
+  ListItem, List, ListItemAvatar, ListItemText, ListItemSecondaryAction,
   Paper, Typography,
 } from "@material-ui/core";
+import {
+  AccountIcon,
+} from '@material-ui/icons';
 import { withStyles, withTheme } from '@material-ui/styles';
+//import Purple from '@material-ui/styles/Colors/Purple';
 
 import Banana from './assets/images/banana.jpg';
 import Apple from './assets/images/apple.jpg';
@@ -41,13 +41,15 @@ const style = theme => ({
     color: "white",
   },
   titleBar: {
-    background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    background: 'linear-gradient(to top, rgba(50,0,50,0.7) 0%, rgba(50,0,50,0.3) 70%, rgba(50,0,50,0) 100%)',
     borderRadius: 8,
   },
   img: {
     borderRadius: 8,
-    maxHeight: "200",
-    maxWidth: "200",
+    maxHeight: 200,
+    maxWidth: 200,
+    height: 150,
+    width: 150,
   }
 });
 
@@ -62,10 +64,16 @@ class Listing extends Component {
     var itemTiles = items.map(item => (
       <GridListTile key={item.img}>
         <img crossOrigin="true" src={item.img} alt={item.title} classes={{ img: classes.img }} />
-        <GridListTileBar title={item.title} classes={{ root: classes.titleBar, title: classes.title }} />
+        <GridListTileBar
+          title={item.title}
+          classes={{ root: classes.titleBar, title: classes.title }}
+          actionIcon={
+            <Button>Claim</Button>
+          }
+        />
       </GridListTile>
     ))
-
+    // <Grid item><Typography>{this.props.min_ago} min ago</Typography></Grid>
     return (
       <GridList cols={2.5} className={classes.gridList}>
         {itemTiles}
@@ -77,37 +85,45 @@ class Listing extends Component {
     return (
       <Card>
         <CardContent>
-          <Grid container justify="space-between">
-            <Grid item><Typography gutterBottom variant="h5" component="h5">{this.props.title}</Typography></Grid>
-            <Grid item><Typography>{this.props.min_ago} min ago</Typography></Grid>
-          </Grid>
-          <Typography component="p">{this.props.description}</Typography>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar><Avatar /></ListItemAvatar>
+            <ListItemText primary={this.props.title} secondary={this.props.user} />
+            <ListItemSecondaryAction>
+              <Typography align="right" component="p">{this.props.min_ago} min ago</Typography>
+              <Typography align="right" component="p">{this.props.dist} feet away</Typography>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Typography gutterBottom component="p">{this.props.description}</Typography>
           {this.renderItems(this.props.items)}
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">Claim Item(s)</Button>
-          <Button size="small" color="primary">Claim All</Button>
+          <Button size="small" color="primary">Claim Items</Button>
+          <Button size="small" color="primary">Message User</Button>
         </CardActions>
-      </Card>
+      </Card >
     );
   }
 }
 Listing.propTypes = {
   title: PropTypes.string,
+  user: PropTypes.string,
   description: PropTypes.string,
   lat: PropTypes.number,
   lng: PropTypes.number,
   square: PropTypes.bool,
   min_ago: PropTypes.number,
+  dist: PropTypes.number,
   items: PropTypes.array,
 };
 Listing.defaultProps = {
   title: "Default Title",
+  user: "samlehman617",
   description: "This is the default description text for a food listing.",
   lat: 42.05,
   lng: -80.22,
   square: false,
   min_ago: 0,
+  dist: 500,
   items: [{
     title: "Banana",
     img: Banana,

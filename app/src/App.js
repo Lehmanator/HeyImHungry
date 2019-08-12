@@ -1,26 +1,19 @@
 import React, { Component, } from 'react';
-import ReactDOM from 'react-dom';
-import { Card, CardContent, CardHeader, } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
-import Divider from '@material-ui/core/Divider';
-// import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import {
+  Container, CssBaseline, Divider, Fab,
+  Grid, GridList,
+  Paper, Typography,
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import { withStyles, withTheme } from '@material-ui/styles';
+
 import Nav from './Nav';
-//import BasicMap from './BasicMap';
-import GoogleMapReact, { GoogleApiWrapper } from 'google-maps-react';
 import Alert from './Alert';
 import MapContainer from './Map';
 import Listing from './Listing';
-import { withStyles, withTheme } from '@material-ui/styles';
-import PropTypes from 'prop-types';
 
+import PropTypes from 'prop-types';
 
 import Banana from './assets/images/banana.jpg';
 import Apple from './assets/images/apple.jpg';
@@ -77,6 +70,8 @@ class App extends Component {
       title: "Soup Kitchen",
       description: "We have food here at the soup kitchen!",
       min_ago: 5,
+      lat: 42.07,
+      lng: -80.25,
       items: [{
         title: "Orange",
         img: Orange,
@@ -98,18 +93,22 @@ class App extends Component {
       <div className="App" style={{ overflow: 'hidden' }}>
         <CssBaseline />
         <Nav />
-        <MapContainer className={classes.map} google={this.props.google} lat={this.state.lat || 42} lng={this.state.lng || -80} />
+        <MapContainer
+          className={classes.map}
+          google={this.props.google}
+          lat={this.state.lat || 42}
+          lng={this.state.lng || -80}
+          items={this.listings}
+        />
         <main>
-          <Container className={classes.content}>
+          <Container className={classes.content} maxWidth="sm">
             <Alert description="Be patient, migration to Firebase is in progress" />
             <GridList spacing={8} cellHeight='auto' cols={1}>
               {this.listings.map(listing => (
-                <Grid item><Listing {...listing} /></Grid>
+                <Grid item key={listing.title}><Listing {...listing} /></Grid>
               ))}
-              <Grid item><Listing title="Food Listing" /></Grid>
-              <Grid item><Listing title="Food Listing" /></Grid>
-              <Grid item><Listing title="Food Listing" /></Grid>
-              <Grid item><Listing title="Food Listing" /></Grid>
+              <Grid item key="example"><Listing title="Food Listing" /></Grid>
+              <Grid item key="default"><Listing title="Food Listing" /></Grid>
             </GridList>
           </Container>
         </main>

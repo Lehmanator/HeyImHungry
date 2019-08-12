@@ -10,6 +10,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 
 class MapContainer extends Component {
+
+  renderMarkers(items) {
+    var markers = items.map(item => (
+      <Marker position={{ lat: item.lat, lng: item.lng }} key={item.lng} />
+    ));
+    return markers;
+  }
   render() {
     const mapStyles = {
       width: '100%',
@@ -24,8 +31,8 @@ class MapContainer extends Component {
           // style={mapStyles}
           initialCenter={{ lat: this.props.lat - 0.075, lng: this.props.lng }}
         >
-          <Marker position={{ lat: this.props.lat, lng: this.props.lng }} />
-
+          <Marker position={{ lat: this.props.lat, lng: this.props.lng }} key="user" />
+          {this.renderMarkers(this.props.items)}
         </Map >
       </Paper>
     );
@@ -35,10 +42,15 @@ class MapContainer extends Component {
 MapContainer.propTypes = {
   lat: PropTypes.number,
   lng: PropTypes.number,
+  items: PropTypes.array,
 }
 MapContainer.defaultProps = {
   lat: 42.0844,
   lng: -80.05,
+  items: [{
+    lat: 42.0850,
+    lng: -80.055,
+  }]
 }
 
 export default GoogleApiWrapper({
