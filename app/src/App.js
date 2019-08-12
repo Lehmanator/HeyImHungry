@@ -66,6 +66,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.listings = [];
+    this.auth = false;
     this.listings = [{
       title: "Soup Kitchen",
       description: "We have food here at the soup kitchen!",
@@ -92,7 +93,7 @@ class App extends Component {
     return (
       <div className="App" style={{ overflow: 'hidden' }}>
         <CssBaseline />
-        <Nav />
+        <Nav auth={this.auth} />
         <MapContainer
           className={classes.map}
           google={this.props.google}
@@ -108,7 +109,7 @@ class App extends Component {
                 <Grid item key={listing.title}><Listing {...listing} /></Grid>
               ))}
               <Grid item key="example"><Listing title="Food Listing" /></Grid>
-              <Grid item key="default"><Listing title="Food Listing" /></Grid>
+              <Grid item key="default"><Listing title="Food Listing 2" /></Grid>
             </GridList>
           </Container>
         </main>

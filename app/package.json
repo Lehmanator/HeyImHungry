@@ -24,7 +24,7 @@
     "start": "webpack-dev-server --mode development",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run build && gh-pages -d build",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject"
