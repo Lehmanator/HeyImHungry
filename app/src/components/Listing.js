@@ -21,11 +21,11 @@ import {
 import { withStyles, withTheme } from '@material-ui/styles';
 //import Purple from '@material-ui/styles/Colors/Purple';
 
-import Banana from './assets/images/banana.jpg';
-import Apple from './assets/images/apple.jpg';
-import Orange from './assets/images/orange.jpg';
+import Banana from '../assets/images/banana.jpg';
+import Apple from '../assets/images/apple.jpg';
+import Orange from '../assets/images/orange.jpg';
 
-import Sam from './assets/images/profile.png';
+import Sam from '../assets/images/profile.png';
 
 const style = theme => ({
   root: {

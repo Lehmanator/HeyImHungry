@@ -10,7 +10,7 @@ import {
   AppBar,
   Avatar, Button, IconButton, Badge,
   Divider, Drawer,
-  InputBase,
+  Icon, InputBase, Link,
   List, ListItem, ListItemIcon, ListItemText,
   Menu, MenuItem,
   Toolbar, Typography,
@@ -28,10 +28,20 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import { withStyles, withTheme } from '@material-ui/styles';
 
+import logo from '../assets/icon.png';
+import * as ROUTES from '../Routes';
+
 const style = theme => ({
   drawerHeader: {
     marginLeft: -5,
     marginTop: -5,
+  },
+  navImage: {
+    height: 30,
+    width: 30,
+    marginRight: 10,
+    display: 'inline',
+    float: 'left',
   },
   searchBar: {
     position: "relative",
@@ -63,8 +73,9 @@ const style = theme => ({
     left: 10,
   },
   title: {
-    paddingLeft: 40,
-    minWidth: 190,
+    marginLeft: 40,
+    minWidth: 210,
+    display: 'inline',
   },
   overflow: {
     position: 'absolute',
@@ -167,7 +178,9 @@ class Nav extends Component {
         </IconButton>
       );
     } else {
-      return (<Button color="inherit" className={classes.user}>Login</Button>);
+      return (
+        <Button color="inherit" className={classes.user} to={ROUTES.SIGN_IN}>Login</Button>
+      );
     }
   }
   render() {
@@ -179,7 +192,10 @@ class Nav extends Component {
             <IconButton color="inherit" aria-label="Menu" onClick={this.toggleDrawer(true)} className={classes.menuButton}>
               <MenuIcon />
             </IconButton>
-            <Typography ariant="h6" color="inherit" className={classes.title}>Hey, I'm Hungry!</Typography>
+            <Link to={ROUTES.HOME} color="inherit" className={classes.title}>
+              <img className={classes.navImage} src={logo} />
+              <Typography variant="h6" color="inherit">Hey, I'm Hungry!</Typography>
+            </Link>
             {this.renderSearchbar()}
             {this.renderUser(this.props.auth)}
             <div className={classes.overflow}>

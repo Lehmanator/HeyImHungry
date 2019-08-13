@@ -2,11 +2,14 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Listing from './Listing';
+
+import clsx from 'clsx';
 
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
 import FaceIcon from '@material-ui/icons/Face';
+
+import Listing from './Listing';
 
 class MapContainer extends Component {
 
