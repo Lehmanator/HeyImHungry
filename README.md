@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="logo" src="https://github.com/samlehman617/HeyImHungry/raw/master/logo.png" />
+  <img alt="logo" src="https://github.com/samlehman617/HeyImHungry/raw/master/app/src/assets/images/logo.png" />
   <br />
   HeyImHungry
 </h1>
@@ -91,7 +91,7 @@ on systemd-based distros.
 
 ## Google Assistant
 
-Actions on Google project to allow users to request a claim on a listing or post new listings from the Google Assistant. 
+Actions on Google project to allow users to request a claim on a listing or post new listings from the Google Assistant.
 
 ### Usage
 

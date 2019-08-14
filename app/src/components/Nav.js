@@ -28,7 +28,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import { withStyles, withTheme } from '@material-ui/styles';
 
-import logo from '../assets/icon.png';
+import logo from '../assets/images/icon.png';
 import * as ROUTES from '../Routes';
 
 const style = theme => ({
