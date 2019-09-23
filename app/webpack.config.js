@@ -12,7 +12,8 @@ const path = require("path");
 module.exports = {
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -41,6 +42,9 @@ module.exports = {
         use: ['file-loader']
       }
     ]
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
