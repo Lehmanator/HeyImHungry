@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import App from "./App.js";
 import * as firebase from 'firebase';
 
@@ -20,4 +21,8 @@ var firebase_config = {
 };
 firebase.initializeApp(firebase_config);
 
-ReactDOM.render(< App />, document.getElementById('root'));
+ReactDOM.render((
+  <BrowserRouter>
+    < App />
+  </BrowserRouter>
+), document.getElementById('root'));

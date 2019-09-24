@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-
-import {
-  Container, Fab, Grid, GridList,
-} from '@material-ui/core';
+import { Switch, Route } from 'react-router-dom';
+import { Fab, } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles, withTheme } from '@material-ui/styles';
 
-import Alert from '../components/Alert';
-import Listing from '../components/Listing';
+import * as ROUTES from '../Routes';
+
+import SignInPage from './SignInPage';
+import SignUpPage from './SignUpPage';
+import PasswordForgetPage from './PasswordForgetPage';
+import AccountPage from './AccountPage';
+import AdminPage from './AdminPage';
+
+import ListingFeed from '../components/ListingFeed';
 import MapContainer from '../components/Map';
 
 import Banana from '../assets/images/banana.jpg';
@@ -28,21 +33,6 @@ const style = theme => ({
     position: 'fixed',
     overflow: 'hidden',
   },
-  content: {
-    position: 'fixed',
-    bottom: 0,
-    padding: '20px',
-    overflow: 'scroll',
-    overflowY: 'scroll',
-    overflowX: 'hidden',
-    maxHeight: '55vh',
-    minHeight: '25vh',
-    scrollbarWidth: 'none',
-  },
-  list: {
-    overflowY: 'scroll',
-    overflowX: 'hidden',
-  }
 });
 
 class HomePage extends Component {
@@ -94,7 +84,7 @@ class HomePage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <main>
         <MapContainer
           className={classes.map}
           google={this.props.google}
@@ -102,20 +92,16 @@ class HomePage extends Component {
           lng={this.state.lng || -80}
           items={this.listings}
         />
-        <main>
-          <Container className={classes.content} maxWidth="sm">
-            <Alert description="Be patient, migration to Firebase is in progress" />
-            <GridList className={classes.list} spacing={8} cellHeight='auto' cols={1}>
-              {this.listings.map(listing => (
-                <Grid item key={listing.title}><Listing {...listing} /></Grid>
-              ))}
-              <Grid item key="example"><Listing title="Food Listing" /></Grid>
-              <Grid item key="default"><Listing title="Food Listing 2" /></Grid>
-            </GridList>
-          </Container>
-        </main>
-        <Fab className={classes.fab} color="primary"><AddIcon /></Fab>
-      </div >
+        <Switch>
+          <Route exact path={ROUTES.LANDING} component={ListingFeed} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
+        </Switch>
+        <Fab className={classes.fab} color="primary" variant="extended"><AddIcon />New Donation</Fab>
+      </main >
     );
   }
 }

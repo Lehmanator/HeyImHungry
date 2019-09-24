@@ -5,17 +5,19 @@
  * @description : Nav
  */
 import React, { Component } from "react";
-
+import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
   Avatar, Button, IconButton, Badge,
   Divider, Drawer,
   Icon, InputBase, Link,
-  List, ListItem, ListItemIcon, ListItemText,
-  Menu, MenuItem,
+  List, ListItem, ListItemIcon, ListItemText, ListSubheader,
+  Menu, MenuItem, MenuList,
   Toolbar, Typography,
 } from '@material-ui/core';
+import FaceIcon from '@material-ui/icons/Face';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
+import HistoryIcon from '@material-ui/icons/History';
 import HomeIcon from '@material-ui/icons/Home';
 import InboxIcon from '@material-ui/icons/Inbox';
 import InfoIcon from '@material-ui/icons/Info';
@@ -32,16 +34,27 @@ import logo from '../assets/images/icon.png';
 import * as ROUTES from '../Routes';
 
 const style = theme => ({
-  drawerHeader: {
-    marginLeft: -5,
-    marginTop: -5,
+  drawerFooter: {
+    position: "absolute",
+    bottom: 0,
+  },
+  homeButton: {
+    margin: 2,
+    minWidth: 180,
+  },
+  menuButton: {
+    marginRight: 2,
+  },
+  overflowButton: {
+
+  },
+  userButton: {
+
   },
   navImage: {
-    height: 30,
-    width: 30,
-    marginRight: 10,
-    display: 'inline',
-    float: 'left',
+    height: 32,
+    width: 32,
+    marginRight: 8,
   },
   searchBar: {
     position: "relative",
@@ -68,23 +81,12 @@ const style = theme => ({
     color: "inherit",
     width: "100%",
   },
-  menuButton: {
-    position: 'absolute',
-    left: 10,
-  },
-  title: {
-    marginLeft: 40,
-    minWidth: 210,
-    display: 'inline',
-  },
-  overflow: {
-    position: 'absolute',
-    right: 0
-  },
-  user: {
-    marginRight: 25,
-  }
 });
+
+// The use of React.forwardRef will no longer be required for react-router-dom v6.
+const homeLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} to="/" {...props} />));
+const loginLink = React.forwardRef((props, ref) => (<RouterLink innerRef={ref} to="/signin" {...props} />));
+
 
 class Nav extends Component {
   constructor(props) {
@@ -106,32 +108,86 @@ class Nav extends Component {
   renderDrawer(open) {
     const { classes } = this.props;
     return (
-      <Drawer anchor="left" open={this.state.drawerOpened} onClose={this.toggleDrawer(false)}>
+      <Drawer
+        anchor="left"
+        open={this.state.drawerOpened}
+        onClose={this.toggleDrawer(false)}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="close drawer"
+            edge="start"
+            onClick={this.toggleDrawer(false)}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Button
+            color="inherit"
+            className={classes.homeButton}
+            component={homeLink}
+          >
+            <img className={classes.navImage} src={logo} />
+            <Typography variant="subtitle2" noWrap>Hey, I'm Hungry!</Typography>
+          </Button>
+        </Toolbar>
+        <Divider />
         <div onClick={this.toggleDrawer(false)} onKeyDown={this.toggleDrawer(false)}>
-          <List>
-            <ListItem className={classes.drawerHeader}>
-              <IconButton onClick={this.toggleDrawer(false)}><MenuIcon /></IconButton>
-              <ListItemText primary="Hey, I'm Hungry!" />
+          <List subheader={<ListSubheader>Browse</ListSubheader>}>
+            <ListItem button>
+              <ListItemIcon><HomeIcon /></ListItemIcon>
+              <ListItemText>Home</ListItemText>
             </ListItem>
-            <Divider />
-            {['Home', 'Map'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <HomeIcon /> : <NavigationIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button>
+              <ListItemIcon><NavigationIcon /></ListItemIcon>
+              <ListItemText>Map</ListItemText>
+            </ListItem>
           </List>
-          <Divider />
-          <List>
-            {['Your Donations', 'Your Reservations'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <FastfoodIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+          <List subheader={<ListSubheader>Your stuff</ListSubheader>}>
+            <ListItem button>
+              <ListItemIcon><FaceIcon /></ListItemIcon>
+              <ListItemText>Your Profile</ListItemText>
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon><Badge badgeContent={1}><MailIcon />
+              </Badge></ListItemIcon>
+              <ListItemText>Messages</ListItemText>
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon><Badge badgeContent={1}><InboxIcon />
+              </Badge></ListItemIcon>
+              <ListItemText>Active Donations</ListItemText>
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon><Badge badgeContent={1}>
+                <FastfoodIcon /></Badge>
+              </ListItemIcon>
+              <ListItemText>Active Reservations</ListItemText>
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon><HistoryIcon /></ListItemIcon>
+              <ListItemText>History</ListItemText>
+            </ListItem>
+          </List>
+          <List subheader={<ListSubheader>About</ListSubheader>}>
+            <ListItem button>
+              <ListItemIcon><InfoIcon /></ListItemIcon>
+              <ListItemText>About Us</ListItemText>
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon><InfoIcon /></ListItemIcon>
+              <ListItemText>How can I help?</ListItemText>
+            </ListItem>
+          </List>
+          <List className={classes.drawerFooter}>
+            <Divider />
+            <ListItem button>
+              <ListItemIcon><SettingsIcon /></ListItemIcon>
+              <ListItemText>Settings</ListItemText>
+            </ListItem>
           </List>
         </div>
-      </Drawer>
+      </Drawer >
     );
   }
   renderMenu() {
@@ -144,17 +200,19 @@ class Nav extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary"><MailIcon /></Badge>
-          </IconButton>Messages
-        </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>
-          <IconButton color="inherit"><SettingsIcon /></IconButton>Settings
-        </MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>
-          <IconButton color="inherit"><InfoIcon /></IconButton>About
-        </MenuItem>
+        <MenuList>
+          <MenuItem onClick={this.handleMenuClose}>
+            <ListItemIcon color="inherit">
+              <Badge badgeContent={4} color="secondary"><MailIcon /></Badge>
+            </ListItemIcon>Messages
+          </MenuItem>
+          <MenuItem onClick={this.handleMenuClose}>
+            <ListItemIcon color="inherit"><SettingsIcon /></ListItemIcon>Settings
+          </MenuItem>
+          <MenuItem onClick={this.handleMenuClose}>
+            <ListItemIcon color="inherit"><InfoIcon /></ListItemIcon>About
+          </MenuItem>
+        </MenuList>
       </Menu>
     );
   }
@@ -171,7 +229,7 @@ class Nav extends Component {
     const { classes } = this.props;
     if (auth) {
       return (
-        <IconButton color="inherit" className={classes.user}>
+        <IconButton color="inherit" className={classes.userButton}>
           <Badge badgeContent={4} color="secondary">
             <Avatar />
           </Badge>
@@ -179,7 +237,12 @@ class Nav extends Component {
       );
     } else {
       return (
-        <Button color="inherit" className={classes.user} to={ROUTES.SIGN_IN}>Login</Button>
+        <Button
+          color="inherit"
+          className={classes.userButton}
+          component={loginLink}
+        >Login
+        </Button>
       );
     }
   }
@@ -189,25 +252,38 @@ class Nav extends Component {
       <div>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton color="inherit" aria-label="Menu" onClick={this.toggleDrawer(true)} className={classes.menuButton}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={this.toggleDrawer(true)}
+              className={classes.menuButton}
+            >
               <MenuIcon />
             </IconButton>
-            <Link to={ROUTES.HOME} color="inherit" className={classes.title}>
+            <Button
+              color="inherit"
+              className={classes.homeButton}
+              component={homeLink}
+            >
               <img className={classes.navImage} src={logo} />
-              <Typography variant="h6" color="inherit">Hey, I'm Hungry!</Typography>
-            </Link>
+              <Typography variant="subtitle2" noWrap>Hey, I'm Hungry!</Typography>
+            </Button>
             {this.renderSearchbar()}
             {this.renderUser(this.props.auth)}
-            <div className={classes.overflow}>
-              <IconButton aria-haspopup="true" onClick={this.handleMenuOpen} color="inherit">
-                <MoreIcon />
-              </IconButton>
-              {this.renderMenu()}
-            </div>
+            <IconButton
+              color="inherit"
+              aria-haspopup="true"
+              edge="end"
+              onClick={this.handleMenuOpen}
+              className={classes.overflowButton}
+            >
+              <MoreIcon />
+            </IconButton>
+            {this.renderMenu()}
           </Toolbar>
         </AppBar>
         {this.renderDrawer()}
-
       </div>
     );
   }
