@@ -1,29 +1,18 @@
-<h1 align="center">
-  <img alt="logo" src="https://github.com/samlehman617/HeyImHungry/raw/master/app/src/assets/images/logo.png" />
-  <br />
-  HeyImHungry
-</h1>
-
-
 <div align="center">
-  <a href="https://travis-ci.com/samlehman617/HeyImHungry">
-    <img alt="Build Status" src="https://travis-ci.com/samlehman617/HeyImHungry.svg?branch=master" />
-  </a>
-  <a href="https://opensource.org/licenses/mit-license.php">
-    <img alt="MIT Licence" src="https://badges.frapsoft.com/os/mit/mit.svg?v=103" />
-  </a>
-  <a href="https://samlehman.me/HeyImHungry">
-    <img alt="Hits" src="http://hits.dwyl.io/samlehman617/samlehman617/HeyImHungry.svg" />
-  </a>
+    <h3 align="center">
+    <img text-align="middle" src="https://raw.githubusercontent.com/samlehman617/HeyImHungry/master/logo.png" width="60%"/>
+  <h3>
+<h1 align="center">Hey, I'm Hungry!<br/>
+  <span>
+  <img src="https://travis-ci.com/samlehman617/HeyImHungry.svg?branch=master" />
+  <img src="http://hits.dwyl.io/samlehman617/samlehman617/heyimhungry.svg" />
+  <a href="https://samlehman.me/HeyImHungry"><img src="https://img.shields.io/badge/Demo-brightgreen.svg?style=flat" /></a>
+  </span>
+  <br/>
+</h1>
+<h4>Hey, I'm Hungry helps eliminate food waste buy connecting hungry users with people who have excess or leftover food.</h4>
+
 </div>
-
-<br />
-
-<p align="center">
-  Hey, I'm Hungry helps eliminate food waste buy connecting hungry users with people who have excess or leftover food.
-</p>
-
-<br />
 
 ## Overview
 
