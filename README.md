@@ -1,6 +1,6 @@
 <div align="center">
     <h3 align="center">
-    <img text-align="middle" src="https://raw.githubusercontent.com/samlehman617/HeyImHungry/master/logo.png" width="60%"/>
+    <img text-align="middle" src="https://raw.githubusercontent.com/samlehman617/HeyImHungry/master/logo.png" width="30%"/>
   <h3>
 <h1 align="center">Hey, I'm Hungry!<br/>
   <span>
@@ -66,7 +66,11 @@ $ sudo usermod -aG docker {your-user}
 
 To start the service on your machine, run
 ```bash
-$ sudo docker run --name HeyImHungry -p 3000:3000 --restart unless-stopped samlehman617/HeyImHungry
+$ sudo docker run \
+    -p 3000:3000 \
+    --name HeyImHungry \
+    --restart unless-stopped \
+    samlehman617/HeyImHungry
 ```
 
 To enable the service to start on boot, run:
